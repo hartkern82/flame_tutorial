@@ -1,4 +1,5 @@
 import 'package:flame/events.dart';
+import 'package:flame_test/common/games_prefercenses.dart';
 import 'package:flame_test/games/joystick/joystick_game_flame.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/flame.dart';
@@ -37,10 +38,10 @@ class _JoystickTestGameState extends State<JoystickTestGame> {
   Widget _gameMenuBuilder(BuildContext buildContext, JoyStickGame game) {
     return Align(
       alignment: Alignment.topCenter,
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.125,
-        color: Colors.orange,
+        // color: Colors.orange,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -51,6 +52,7 @@ class _JoystickTestGameState extends State<JoystickTestGame> {
                 SystemChrome.setPreferredOrientations([
                   DeviceOrientation.portraitUp,
                 ]);
+                game.stopMusic();
                 Navigator.of(context).pushReplacementNamed('/');
               },
               child: Container(
@@ -68,16 +70,18 @@ class _JoystickTestGameState extends State<JoystickTestGame> {
             ),
             GestureDetector(
               onTap: () {
-                //how to turn of or on music during playing?????
-                
+                game.pauseMusic();
+                setState(() {});
               },
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.125,
                 width: MediaQuery.of(context).size.height * 0.125,
                 color: Theme.of(context).colorScheme.background.withOpacity(0.5),
-                child: const Center(
+                child: Center(
                   child: Icon(
-                    Icons.speaker,
+                    game.isplayingMusic
+                        ? GamingPrefercences.isPlayingIcon
+                        : GamingPrefercences.isNotPlayingIcon,
                     size: 35,
                     color: Colors.white,
                   ),
