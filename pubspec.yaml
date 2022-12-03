@@ -1,0 +1,28 @@
+name: flame_test
+description: Project for testing and evalutating the Flame Engine for use cases in Multimedia Museum Guide Apps
+
+publish_to: 'none'
+
+version: 1.0.0+100
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  flame: ^1.2.0
+  dashbook: ^0.1.10
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/images/
