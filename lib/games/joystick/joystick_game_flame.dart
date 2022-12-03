@@ -8,7 +8,7 @@ class JoyStickGame extends FlameGame with HasDraggables {
   late final JoystickPlayer player;
   late final JoystickComponent joystick;
 
-  Future<void> _loadJoystick() async {
+  void _loadJoystick() {
     final knobPaint = BasicPalette.blue.withAlpha(200).paint();
     final backgroundPaint = BasicPalette.blue.withAlpha(100).paint();
     joystick = JoystickComponent(
@@ -23,10 +23,7 @@ class JoyStickGame extends FlameGame with HasDraggables {
 
   @override
   Future<void> onLoad() async {
-    Future.delayed(
-      Duration(milliseconds: 20),()=> overlays.add('GameMenu')
-    );
-   
-    await _loadJoystick();
+    overlays.add('GameMenu');
+    _loadJoystick();
   }
 }
