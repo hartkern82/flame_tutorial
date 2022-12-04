@@ -1,21 +1,32 @@
 import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
-import 'package:flame_test/games/joystick/joystick_player.dart';
+import 'package:flame_test/games/museum_exploration/actors/player_character.dart';
+import 'package:flame_test/games/museum_exploration/world/obstacle_component.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:tiled/tiled.dart';
-import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flame_audio/flame_audio.dart';
 
-class JoyStickGame extends FlameGame with HasDraggables {
-  late final JoystickPlayer player;
+class MuseumTileGame extends FlameGame with HasDraggables {
+  late final PlayerCharacter player;
   late final JoystickComponent joystick;
   late double mapWidth;
   late double mapHeight;
-  late TiledComponent homeMap;
+  late TiledComponent museumGameMap;
   late bool isplayingMusic;
+
+  void _loadObstacles() {
+    final List<TiledObject> obstaclesGroup =
+        museumGameMap.tileMap.getLayer<ObjectGroup>('obstacles')?.objects ?? [];
+    for (TiledObject obj in obstaclesGroup) {
+      add(ObstacleComponent(obj));
+    }
+    if (kDebugMode) {
+      print('obstacles loaded');
+    }
+  }
 
   void _loadJoystick() {
     final knobPaint = BasicPalette.blue.withAlpha(200).paint();
@@ -25,17 +36,17 @@ class JoyStickGame extends FlameGame with HasDraggables {
       background: CircleComponent(radius: 50, paint: backgroundPaint),
       margin: const EdgeInsets.only(left: 10, bottom: 10),
     );
-    player = JoystickPlayer(joystick);
+    player = PlayerCharacter(joystick);
     add(player);
     add(joystick);
-    _loadMusic();
+    camera.followComponent(player, worldBounds: Rect.fromLTRB(0, 0, mapWidth, mapHeight));
   }
 
   Future<void> _loadMap() async {
-    homeMap = await TiledComponent.load('droidmap.tmx', Vector2(32, 32));
-    add(homeMap);
-    mapWidth = homeMap.tileMap.map.width * 32;
-    mapHeight = homeMap.tileMap.map.height * 32;
+    museumGameMap = await TiledComponent.load('droidmap.tmx', Vector2(32, 32));
+    add(museumGameMap);
+    mapWidth = museumGameMap.tileMap.map.width * 32;
+    mapHeight = museumGameMap.tileMap.map.height * 32;
     if (kDebugMode) {
       print('Map loaded');
     }
@@ -51,7 +62,7 @@ class JoyStickGame extends FlameGame with HasDraggables {
     }
   }
 
-  void pauseMusic() {
+  void toggleMusic() {
     if (FlameAudio.bgm.isPlaying) {
       FlameAudio.bgm.pause();
       isplayingMusic = false;
@@ -77,7 +88,7 @@ class JoyStickGame extends FlameGame with HasDraggables {
   @override
   Future<void> onLoad() async {
     await _loadMap();
-
+    _loadObstacles();
     _loadJoystick();
     overlays.add('GameMenu');
     _loadMusic();

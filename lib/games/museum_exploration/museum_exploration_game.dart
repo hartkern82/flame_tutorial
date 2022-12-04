@@ -1,21 +1,20 @@
-import 'package:flame/events.dart';
-import 'package:flame_test/common/games_prefercenses.dart';
-import 'package:flame_test/games/joystick/joystick_game_flame.dart';
+import 'package:flame_test/common/gaming_ui_prefercenses.dart';
+import 'package:flame_test/games/museum_exploration/museum_exploration_game_flame.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/services.dart';
 import 'package:dashbook/dashbook.dart';
 
-class JoystickTestGame extends StatefulWidget {
-  const JoystickTestGame({Key? key}) : super(key: key);
+class MuseumExplorationGame extends StatefulWidget {
+  const MuseumExplorationGame({Key? key}) : super(key: key);
 
   @override
-  State<JoystickTestGame> createState() => _JoystickTestGameState();
+  State<MuseumExplorationGame> createState() => _MuseumExplorationGameState();
 }
 
-class _JoystickTestGameState extends State<JoystickTestGame> {
-  late final JoyStickGame _game;
+class _MuseumExplorationGameState extends State<MuseumExplorationGame> {
+  late final MuseumTileGame _game;
 
   Future<void> setDeviceSettings() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +26,7 @@ class _JoystickTestGameState extends State<JoystickTestGame> {
   void initState() {
     super.initState();
     setDeviceSettings();
-    _game = JoyStickGame();
+    _game = MuseumTileGame();
   }
 
   @override
@@ -35,13 +34,11 @@ class _JoystickTestGameState extends State<JoystickTestGame> {
     return GameWidget(game: _game, overlayBuilderMap: {'GameMenu': _gameMenuBuilder});
   }
 
-  Widget _gameMenuBuilder(BuildContext buildContext, JoyStickGame game) {
+  Widget _gameMenuBuilder(BuildContext buildContext, MuseumTileGame game) {
     return Align(
-      alignment: Alignment.topCenter,
+      alignment: GamingUIPrefercences.gameMenuAlignment,
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.125,
-        // color: Colors.orange,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -70,7 +67,7 @@ class _JoystickTestGameState extends State<JoystickTestGame> {
             ),
             GestureDetector(
               onTap: () {
-                game.pauseMusic();
+                game.toggleMusic();
                 setState(() {});
               },
               child: Container(
@@ -80,9 +77,9 @@ class _JoystickTestGameState extends State<JoystickTestGame> {
                 child: Center(
                   child: Icon(
                     game.isplayingMusic
-                        ? GamingPrefercences.isPlayingIcon
-                        : GamingPrefercences.isNotPlayingIcon,
-                    size: 35,
+                        ? GamingUIPrefercences.isPlayingIcon
+                        : GamingUIPrefercences.isNotPlayingIcon,
+                    size: GamingUIPrefercences.iconSize,
                     color: Colors.white,
                   ),
                 ),
@@ -95,8 +92,8 @@ class _JoystickTestGameState extends State<JoystickTestGame> {
   }
 
   Widget overlayBuilder(DashbookContext ctx) {
-    return GameWidget<JoyStickGame>(
-      game: JoyStickGame(),
+    return GameWidget<MuseumTileGame>(
+      game: MuseumTileGame(),
       overlayBuilderMap: {
         'GameMenu': _gameMenuBuilder,
       },
