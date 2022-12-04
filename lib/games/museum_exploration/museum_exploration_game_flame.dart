@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
 import 'package:flame_test/games/museum_exploration/actors/player_character.dart';
 import 'package:flame_test/games/museum_exploration/world/obstacle_component.dart';
+import 'package:flame_test/games/museum_exploration/world/station_component.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
@@ -9,7 +10,7 @@ import 'package:tiled/tiled.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flame_audio/flame_audio.dart';
 
-class MuseumTileGame extends FlameGame with HasDraggables {
+class MuseumTileGame extends FlameGame with HasDraggables, HasCollisionDetection {
   late final PlayerCharacter player;
   late final JoystickComponent joystick;
   late double mapWidth;
@@ -25,6 +26,17 @@ class MuseumTileGame extends FlameGame with HasDraggables {
     }
     if (kDebugMode) {
       print('obstacles loaded');
+    }
+  }
+
+  void _loadStations() {
+    final List<TiledObject> stationsGroup =
+        museumGameMap.tileMap.getLayer<ObjectGroup>('stations')?.objects ?? [];
+    for (final obj in stationsGroup) {
+      add(StationComponent(obj));
+    }
+    if (kDebugMode) {
+      print('Stationbounds loaded');
     }
   }
 
@@ -89,6 +101,7 @@ class MuseumTileGame extends FlameGame with HasDraggables {
   Future<void> onLoad() async {
     await _loadMap();
     _loadObstacles();
+    _loadStations();
     _loadJoystick();
     overlays.add('GameMenu');
     _loadMusic();

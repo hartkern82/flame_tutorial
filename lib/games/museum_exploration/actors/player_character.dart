@@ -4,6 +4,7 @@ import 'package:flame/sprite.dart';
 import 'package:flame_test/common/gaming_ui_prefercenses.dart';
 import 'package:flame_test/games/museum_exploration/museum_exploration_game_flame.dart';
 import 'package:flame_test/games/museum_exploration/world/obstacle_component.dart';
+import 'package:flame_test/games/museum_exploration/world/station_component.dart';
 import 'package:flutter/foundation.dart';
 
 class PlayerCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTileGame>, CollisionCallbacks {
@@ -60,20 +61,26 @@ class PlayerCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTil
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (kDebugMode) {
-      print(other);
-    }
-    if (other is ObstacleComponent) {
-      if (kDebugMode) {
-        print('hit obstacle');
-      }
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent hitbox) {
+    super.onCollision(intersectionPoints, hitbox);
+
+    if (hitbox is ObstacleComponent) {
       if (!collided) {
+        if (kDebugMode) {
+          print('hit obstacle');
+        }
+        collided = true;
+        collidedDirection = joystick.direction;
+      }
+    } else if (hitbox is StationComponent) {
+      if (!collided) {
+        if (kDebugMode) {
+          print('hit station');
+        }
         collided = true;
         collidedDirection = joystick.direction;
       }
     }
-    super.onCollision(intersectionPoints, other);
   }
 
   @override
