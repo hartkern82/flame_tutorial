@@ -33,7 +33,7 @@ class PlayerCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTil
       ),
     );
     debugMode = GamingUIPrefercences.isDebugMode;
-    position = Vector2(100, 150);
+    position = Vector2(500, 350);
     final spriteSheet =
         SpriteSheet(image: await gameRef.images.load('george2.png'), srcSize: Vector2(48, 48));
     downAnimation = spriteSheet.createAnimation(row: 0, stepTime: GamingUIPrefercences.animationSpeed, to: 4);
