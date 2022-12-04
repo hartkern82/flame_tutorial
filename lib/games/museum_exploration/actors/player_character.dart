@@ -33,6 +33,7 @@ class PlayerCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTil
       ),
     );
     debugMode = GamingUIPrefercences.isDebugMode;
+    position = Vector2(100, 150);
     final spriteSheet =
         SpriteSheet(image: await gameRef.images.load('george2.png'), srcSize: Vector2(48, 48));
     downAnimation = spriteSheet.createAnimation(row: 0, stepTime: GamingUIPrefercences.animationSpeed, to: 4);
@@ -60,7 +61,6 @@ class PlayerCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTil
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollision(intersectionPoints, other);
     if (kDebugMode) {
       print(other);
     }
@@ -73,14 +73,7 @@ class PlayerCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTil
         collidedDirection = joystick.direction;
       }
     }
-    // if (other is StationComponent) {
-    //   if (!collided) {
-    //     collided = true;
-    //     collidedDirection = joystick.direction;
-    //     gameRef.pauseEngine(); //?????
-    //     _showGotoStationDialog(_getStation(other.station.name)!);
-    //   }
-    // }
+    super.onCollision(intersectionPoints, other);
   }
 
   @override

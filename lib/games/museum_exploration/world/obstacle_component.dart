@@ -15,10 +15,11 @@ class ObstacleComponent extends PositionComponent with HasGameRef<MuseumTileGame
     await super.onLoad();
     position = Vector2(obstacle.x, obstacle.y);
     size = Vector2(obstacle.width, obstacle.height);
-    add(ScreenHitbox());
+    add(RectangleHitbox());
     debugMode = GamingUIPrefercences.isDebugMode;
   }
 
+//just for testing purposes
   @override
   void onCollisionStart(
     Set<Vector2> intersectionPoints,
@@ -35,6 +36,7 @@ class ObstacleComponent extends PositionComponent with HasGameRef<MuseumTileGame
     }
   }
 
+//just for testing purposes
   @override
   void onCollisionEnd(PositionComponent other) {
     super.onCollisionEnd(other);
