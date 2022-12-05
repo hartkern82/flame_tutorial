@@ -29,10 +29,10 @@ class NPCCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTileGa
     );
     debugMode = GamingUIPrefercences.isDebugMode;
     position = startPosition;
+
+    //load all animations
     final spriteSheet =
         SpriteSheet(image: await gameRef.images.load('george2.png'), srcSize: Vector2(48, 48));
-
-    //SpriteAnimation
     downAnimation = spriteSheet.createAnimation(row: 0, stepTime: GamingUIPrefercences.animationSpeed, to: 4);
     leftAnimation = spriteSheet.createAnimation(row: 1, stepTime: GamingUIPrefercences.animationSpeed, to: 4);
     upAnimation = spriteSheet.createAnimation(row: 2, stepTime: GamingUIPrefercences.animationSpeed, to: 4);
@@ -49,6 +49,8 @@ class NPCCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTileGa
         spriteSheet.createAnimation(row: 2, stepTime: GamingUIPrefercences.animationSpeed, to: 4);
     animation = idleAnimation;
     final spriteSize = Vector2.all(100.0);
+
+    //add the animationcomponent
     animationComponent = SpriteAnimationComponent(animation: animation, size: spriteSize);
     add(animationComponent);
   }
@@ -63,7 +65,7 @@ class NPCCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTileGa
     double movementX = position.x + GamingUIPrefercences.npcSpeed * dt;
     position = Vector2(movementX, position.y);
     if (movementX > 500) {
-      animationComponent.animation = leftAnimation;
+      animationComponent.animation = leftAnimation; // change animation on the fly
     }
   }
 }
