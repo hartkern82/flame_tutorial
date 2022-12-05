@@ -27,6 +27,7 @@ class PlayerCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTil
 
   @override
   Future<void> onLoad() async {
+    await super.onLoad();
     add(
       RectangleHitbox(
         position: Vector2.all(GamingUIPrefercences.characterSize / 2),
@@ -61,10 +62,10 @@ class PlayerCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTil
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent hitbox) {
-    super.onCollision(intersectionPoints, hitbox);
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
 
-    if (hitbox is ObstacleComponent) {
+    if (other is ObstacleComponent) {
       if (!collided) {
         if (kDebugMode) {
           print('hit obstacle');
@@ -72,7 +73,7 @@ class PlayerCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTil
         collided = true;
         collidedDirection = joystick.direction;
       }
-    } else if (hitbox is StationComponent) {
+    } else if (other is StationComponent) {
       if (!collided) {
         if (kDebugMode) {
           print('hit station');

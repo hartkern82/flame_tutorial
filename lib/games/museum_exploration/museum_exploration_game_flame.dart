@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
+import 'package:flame_test/games/museum_exploration/actors/npc_character.dart';
 import 'package:flame_test/games/museum_exploration/actors/player_character.dart';
 import 'package:flame_test/games/museum_exploration/world/obstacle_component.dart';
 import 'package:flame_test/games/museum_exploration/world/station_component.dart';
@@ -12,11 +13,12 @@ import 'package:flame_audio/flame_audio.dart';
 
 class MuseumTileGame extends FlameGame with HasDraggables, HasCollisionDetection {
   late final PlayerCharacter player;
+  late final NPCCharacter npcChar;
   late final JoystickComponent joystick;
   late double mapWidth;
   late double mapHeight;
   late TiledComponent museumGameMap;
-  late bool isplayingMusic;
+  bool isplayingMusic = false;
 
   void _loadObstacles() {
     final List<TiledObject> obstaclesGroup =
@@ -97,6 +99,11 @@ class MuseumTileGame extends FlameGame with HasDraggables, HasCollisionDetection
     }
   }
 
+  void _loadNPC() {
+    NPCCharacter chr = NPCCharacter();
+    add(chr);
+  }
+
   @override
   Future<void> onLoad() async {
     await _loadMap();
@@ -104,6 +111,7 @@ class MuseumTileGame extends FlameGame with HasDraggables, HasCollisionDetection
     _loadStations();
     _loadJoystick();
     overlays.add('GameMenu');
-    _loadMusic();
+    _loadNPC();
+    // _loadMusic();
   }
 }
