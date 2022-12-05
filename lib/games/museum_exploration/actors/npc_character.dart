@@ -2,7 +2,9 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame_test/common/gaming_ui_prefercenses.dart';
+import 'package:flame_test/games/museum_exploration/actors/player_character.dart';
 import 'package:flame_test/games/museum_exploration/museum_exploration_game_flame.dart';
+import 'package:flutter/foundation.dart';
 
 class NPCCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTileGame>, CollisionCallbacks {
   late SpriteAnimation downAnimation;
@@ -62,10 +64,28 @@ class NPCCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTileGa
   }
 
   void randomMovement(double dt) {
-    double movementX = position.x + GamingUIPrefercences.npcSpeed * dt;
-    position = Vector2(movementX, position.y);
-    if (movementX > 500) {
-      animationComponent.animation = leftAnimation; // change animation on the fly
+    if (!collided) {
+      double movementX = position.x + GamingUIPrefercences.npcSpeed * dt;
+      position = Vector2(movementX, position.y);
+      if (movementX > 500) {
+        animationComponent.animation = rightAnimation; // change animation on the fly
+      }
+    } else {
+      animationComponent.animation = idleAnimation;
+    }
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+
+    if (other is PlayerCharacter) {
+      if (!collided) {
+        if (kDebugMode) {
+          print('hit by player');
+        }
+        collided = true;
+      }
     }
   }
 }
