@@ -16,6 +16,7 @@ class NPCCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTileGa
   late SpriteAnimation upRightAnimation;
   bool collided = false;
   Vector2 startPosition = Vector2(250, 350);
+  late SpriteAnimationComponent animationComponent;
 
   @override
   Future<void> onLoad() async {
@@ -30,6 +31,8 @@ class NPCCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTileGa
     position = startPosition;
     final spriteSheet =
         SpriteSheet(image: await gameRef.images.load('george2.png'), srcSize: Vector2(48, 48));
+
+    //SpriteAnimation
     downAnimation = spriteSheet.createAnimation(row: 0, stepTime: GamingUIPrefercences.animationSpeed, to: 4);
     leftAnimation = spriteSheet.createAnimation(row: 1, stepTime: GamingUIPrefercences.animationSpeed, to: 4);
     upAnimation = spriteSheet.createAnimation(row: 2, stepTime: GamingUIPrefercences.animationSpeed, to: 4);
@@ -45,6 +48,9 @@ class NPCCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTileGa
     upRightAnimation =
         spriteSheet.createAnimation(row: 2, stepTime: GamingUIPrefercences.animationSpeed, to: 4);
     animation = idleAnimation;
+    final spriteSize = Vector2.all(100.0);
+    animationComponent = SpriteAnimationComponent(animation: animation, size: spriteSize);
+    add(animationComponent);
   }
 
   @override
@@ -55,7 +61,6 @@ class NPCCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTileGa
 
   void randomMovement(double dt) {
     double movementX = position.x + GamingUIPrefercences.npcSpeed * dt;
-    animation = rightAnimation;
     position = Vector2(movementX, position.y);
   }
 }

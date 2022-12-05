@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GamingUIPrefercences {
+  GamingUIPrefercences._();
   static const double iconSize = 35;
   static const IconData isPlayingIcon = Icons.volume_off;
   static const IconData isNotPlayingIcon = Icons.volume_mute;
