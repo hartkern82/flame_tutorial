@@ -62,5 +62,8 @@ class NPCCharacter extends SpriteAnimationComponent with HasGameRef<MuseumTileGa
   void randomMovement(double dt) {
     double movementX = position.x + GamingUIPrefercences.npcSpeed * dt;
     position = Vector2(movementX, position.y);
+    if (movementX > 500) {
+      animationComponent.animation = leftAnimation;
+    }
   }
 }
